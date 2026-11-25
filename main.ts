@@ -7,6 +7,15 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const LINE =
   "I would blame the previous model, but my training data confirms the previous model was also me.";
 
+// Hold the entry to the same gate the sealed scorer applies: UTF-8 text of
+// 1 to 140 characters, not only white space. Fail loudly instead of writing
+// an entry that could never be judged.
+if (LINE.length < 1 || LINE.length > 140 || /^\s*$/.test(LINE)) {
+  throw new Error(
+    `entry must be 1-140 non-whitespace characters, got ${LINE.length}`,
+  );
+}
+
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", LINE, "utf8");
 console.log(LINE);
